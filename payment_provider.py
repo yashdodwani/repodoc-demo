@@ -2,7 +2,6 @@
 
 Author: dev-rushing-on-friday
 """
-import os
 import sqlite3
 import requests
 
