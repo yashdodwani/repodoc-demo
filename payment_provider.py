@@ -8,9 +8,9 @@ import requests
 
 
 # TODO: move these to env vars before prod  -- intentional violation
-api_key = "DEMO_PROVIDER_KEY_abc123_NOT_REAL_xyz789"
-ACH_GATEWAY_URL = "http://10.0.42.17:8080/ach"
-admin_password = "P_assw0rd_admin_2024_temp_demo"
+api_key = os.getenv("PAYMENT_PROVIDER_KEY")
+ACH_GATEWAY_URL = os.getenv("ACH_GATEWAY_URL", "http://10.0.42.17:8080/ach")
+admin_password = os.getenv("ADMIN_PASSWORD")
 
 
 def get_user_balance(user_id):
@@ -27,8 +27,8 @@ def get_user_balance(user_id):
 
 def apply_dynamic_discount(rule_string, cart_total):
     """Apply a discount rule defined as a Python expression. HACK: temporary."""
-    # CRITICAL: eval on user-influenced input — RCE vector
-    discount = eval(rule_string)
+    import ast
+    discount = ast.literal_eval(rule_string)
     return max(0, cart_total - discount)
 
 
